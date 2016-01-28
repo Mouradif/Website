@@ -18,19 +18,29 @@ class Page
 	
 	function __construct($module="accueil", $template="", $menu="", $header="", $footer="")
 	{
-		$template = ($template) ? $template : "accueil";
-		$this->assigned['head']['file'] = ($header) ? 
-			"templates/".$header.".html" :
-			"templates/header.html";
+		global $TPL;
+		$template = ($template) ? $template : "index";
+		if (is_array($menu)) {
+			$t = $menu;
+			$this->assigned['head']['file'] = "templates/".$t['header'].".html";
+			$this->assigned['menu']['file'] = "templates/".$t['menu'].".html";
+			$this->assigned['page']['file'] = "modules/".$module."/".$template.".html";
+			$this->assigned['foot']['file'] = "templates/".$t['footer'].".html";
+		}
+		else {
+			$this->assigned['head']['file'] = ($header) ? 
+				"templates/".$header.".html" :
+				"templates/".$TPL['default']['header'].".html";
+			$this->assigned['menu']['file'] = ($menu) ? $menu :
+				"templates/".$TPL['default']['menu'].".html";
+			$this->assigned['page']['file'] = "modules/".$module."/".$template.".html";
+			$this->assigned['foot']['file'] = ($footer) ?
+				"templates/".$footer.".html" :
+				"templates/".$TPL['default']['footer'].".html";
+			}
 		$this->assigned['head']['vars'] = array();
-		$this->assigned['menu']['file'] = ($menu) ? $menu :
-			"templates/menu.html";
 		$this->assigned['menu']['vars'] = array();
-		$this->assigned['page']['file'] = "modules/".$module."/".$template.".html";
 		$this->assigned['page']['vars'] = array();
-		$this->assigned['foot']['file'] = ($footer) ?
-			"templates/".$footer.".html" :
-			"templates/footer.html";
 		$this->assigned['foot']['vars'] = array();
 		$this->html = "";
 	}
@@ -79,6 +89,59 @@ class Page
 		$this->assigned['foot']['vars'] = ($assign) ? $assign : $this->assigned['foot']['vars'];
 	}
 	
+	function jsplug($name) {
+		if (is_array($name)) {
+			foreach($name as $line) {
+				$this->jsplug($line);
+			}
+		}
+		else {
+			$addon = "<script type='text/javascript' src='$name'></script>";
+			$this->assigned['head']['vars']['plugins'] = (isset($this->assigned['head']['vars']['plugins'])) ?
+				$this->assigned['head']['vars']['plugins'] . "\n\t" .$addon :
+				$addon;
+		}
+	}
+
+	function jsadd($name) {
+		if (is_array($name)) {
+			foreach($name as $line) {
+				$this->jsadd($line);
+			}
+		}
+		else {
+			$addon = "<script type='text/javascript' src='$name'></script>";
+			$this->assigned['head']['vars']['addons'] = (isset($this->assigned['head']['vars']['addons'])) ?
+				$this->assigned['head']['vars']['addons'] . "\n\t" .$addon : $addon;
+		}
+	}
+
+	function cssplug($name) {
+		if (is_array($name)) {
+			foreach($name as $line) {
+				$this->cssplug($line);
+			}
+		}
+		else {
+			$addon = "<link rel='stylesheet' type='text/css' href='$name' />";
+			$this->assigned['head']['vars']['plugins'] = (isset($this->assigned['head']['vars']['plugins'])) ?
+				$this->assigned['head']['vars']['plugins'] . "\n\t" .$addon :
+				$addon;
+		}
+	}
+
+	function cssadd($name) {
+		if (is_array($name)) {
+			foreach($name as $line) {
+				$this->cssadd($line);
+			}
+		}
+		else {
+			$addon = "<link rel='stylesheet' type='text/css' href='$name' />";
+			$this->assigned['head']['vars']['addons'] = (isset($this->assigned['head']['vars']['addons'])) ?
+				$this->assigned['head']['vars']['addons'] . "\n\t" .$addon : $addon;
+		}
+	}
 	//function if_assign($cond, $name, $array
 	function clear()
 	{
@@ -122,7 +185,7 @@ class Page
 			return 0;
 		}
 		// Nettoyage des variables non-renseignées
-		$this->html = preg_replace("`\{(?:.+)\}`U", "", $this->html);
+		$this->html = preg_replace("`\{([A-Z_+)\}`U", "", $this->html);
 		$this->html = preg_replace("`<:(?:.+):>`U", "", $this->html);
 		return $this->html;
 	}
@@ -183,14 +246,6 @@ Utilisation :
 function simple_output($var, $remplacement, $src)
 {
 	$ret = str_replace("{".strtoupper($var)."}", $remplacement, $src);
-	return $ret;
-}
-
-function urlize($var)
-{
-	$ret = html_entity_decode($var, ENT_NOQUOTES, "UTF-8");
-	$ret = strtr($ret,'àáâãäçèéêëìíîïñòóôõöùúûüýÿÀÁÂÃÄÇÈÉÊËÌÍÎÏÑÒÓÔÕÖÙÚÛÜÝ','aaaaaceeeeiiiinooooouuuuyyAAAAACEEEEIIIINOOOOOUUUUe');
-	$ret = str_replace(" ", "%20", $ret);
 	return $ret;
 }
 

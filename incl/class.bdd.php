@@ -15,6 +15,7 @@ class Bdd
 {
 	public $config = array(),
 		$error,
+		$errno,
 		$requete,
 		$histo_requetes = array(),
 		$link,
@@ -34,16 +35,10 @@ class Bdd
 	
 	function connect()
 	{
-		$id = mysqli_connect($this->config['host'], $this->config['user'], $this->config['pass']);
+		$id = mysqli_connect($this->config['host'], $this->config['user'], $this->config['pass'], $this->config['name']);
 		if (!$id)
 		{
-			$this->error = "Connexion impossible";
-			return false;
-		}
-		$sel = mysqli_select_db($id, $this->config['name']);
-		if (!$sel)
-		{
-			$this->error = "Base de données introuvable";
+			$this->error = mysqli_connect_error();
 			return false;
 		}
 		mysqli_set_charset($id, 'utf8');
@@ -57,6 +52,7 @@ class Bdd
 		if (!$query)
 		{
 			$this->error = mysqli_error($this->link);
+			$this->errno = mysqli_errno($this->link);
 			return false;
 		}
 		if (preg_match("`^select`i", $sql))
