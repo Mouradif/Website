@@ -185,7 +185,7 @@ class Page
 			return 0;
 		}
 		// Nettoyage des variables non-renseignées
-		$this->html = preg_replace("`\{([A-Z_+)\}`U", "", $this->html);
+		$this->html = preg_replace("`\{([A-Z_]+)\}`U", "", $this->html);
 		$this->html = preg_replace("`<:(?:.+):>`U", "", $this->html);
 		return $this->html;
 	}
