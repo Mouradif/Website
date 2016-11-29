@@ -1,14 +1,4 @@
 <?php
-/*
-	Mise en page générale de EdicomCMS
-	Codé par Mourad Kejji le xx/xx/xxxx
-			-	mkejji@gmail.com
-	
-	Tâches du script :
-			- Création d'une classe Page permettant d'assigner des variables à un objet
-			et d'afficher une page HTML template en y remplaçant les éléments à remplacer
-*/
-
 class Page
 {
 	public

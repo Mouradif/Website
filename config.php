@@ -11,31 +11,11 @@ define ("SITE_INDEX_USER", "accueil");
 define ("SITE_INDEX_GUEST", "accueil");
 define ("DEFAULT_LANG", "fr");
 
-// Paramètres de l'application
-$dir = array(
-	"fr" => "ltr",
-	"en" => "ltr",
-	"de" => "ltr",
-	"jp" => "ltr",
-	"ko" => "ltr",
-	"cn" => "ltr",
-	"th" => "ltr",
-	"sp" => "ltr",
-	"it" => "ltr",
-	"ar" => "rtl",
-	"ru" => "ltr",
-	);
-$menu = array(
-	"fr" => "Choix de la langue :",
-	"en" => "Change Language:",
-	"de" => "??",
-	"jp" => "??",
-	"ko" => "??",
-	"cn" => "??",
-	"th" => "??",
-	"sp" => "??",
-	"it" => "??",
-	"ar" => "إختيار اللغة",
-	"ru" => "??",
-	);
+$TPL = [
+	"default"	=> [
+		"header"	=> "header",
+		"footer"	=> "footer",
+		"menu"		=> "menu"
+	]
+];
 ?>

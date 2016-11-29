@@ -1,16 +1,4 @@
 <?php
-/*
-	Mise en page générale de EdicomCMS
-	Codé par Mourad Kejji le xx/xx/xxxx
-			-	mkejji@gmail.com
-	
-	Tâches du script :
-			- Création de la classe BDD (Base de données) qui permettra de 
-			se connecter à une base de données, de générer des requêtes, de les
-			executer et d'en extraire les résultats de la façon la plus paramétrable
-			possible.
-*/
-
 class Bdd
 {
 	public $config = array(),
